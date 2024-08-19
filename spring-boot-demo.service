@@ -1,0 +1,11 @@
+[Unit]
+Description=spring boot demo
+After=syslog.target
+
+[Service]
+User=ec2-user
+ExecStart=/usr/bin/java -jar /home/ec2-user/app/SpringSample-0.0.1-SNAPSHOT.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

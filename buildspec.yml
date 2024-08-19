@@ -1,0 +1,30 @@
+version: 0.1
+
+phases:
+  pre_build:
+    commands:
+      - echo "Running GradlewBuild"
+      - chmod 755 ./gradlew
+      - ./gradlew build
+  build:
+    commands:
+      - echo "Build completed on $(date)"
+  post_build:
+    commands:
+      - echo start post build.
+      - mkdir artifacts
+      - cp build/libs/SpringSample-0.0.1-SNAPSHOT.jar artifacts
+      - cp appspec.yml artifacts
+      - cp spring-boot-demo-restart.sh artifacts
+      - cp spring-boot-demo.service artifacts
+artifacts:
+  commands:
+    - echo "start artifacts on on $(date)"
+  files:
+    - SpringSample-0.0.1-SNAPSHOT.jar
+    - appspec.yml
+    - spring-boot-demo-restart.sh
+    - spring-boot-demo.service
+  commands:
+    - echo "start artifacts on after $(date)"
+  base-directory: artifacts
