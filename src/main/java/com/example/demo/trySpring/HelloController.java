@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.database.EmployeeEntity;
+
 @Controller
 public class HelloController {
 
@@ -45,13 +47,14 @@ public class HelloController {
         int id = Integer.parseInt(str);
 
         // １件検索
-        Employee employee = helloService.findOne(id);
-
+        //EmployeeEntity employee = helloService.getOneEmployee(id);
+        EmployeeEntity employee = helloService.getOneEmployee(id);
         // 検索結果をModelに登録
-        model.addAttribute("id", employee.getEmployeeId());
-        model.addAttribute("name", employee.getEmployeeName());
-        model.addAttribute("age", employee.getAge());
-
+        if(employee != null) {
+	        model.addAttribute("id", employee.getEmployeeId());
+	        model.addAttribute("name", employee.getEmployeeName());
+	        model.addAttribute("age", employee.getAge());
+	    }
         // helloResponseDB.htmlに画面遷移
         return "helloResponseDB";
     }

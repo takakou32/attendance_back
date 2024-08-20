@@ -1,8 +1,9 @@
 
 # jpaRepositoryの実装
 ## 概要
-- springSampleプロジェクトのDBデータ取得を、jdbcTemplateを使用した構成から、jpaRepositoryを使用する構成へのリファクタリングを行うこと。
-- DBからの抽出にSpring Data JPAのクエリ自動生成メソッドを実装すること。
+- springSampleプロジェクトのDBデータ取得をjdbcTemplateを使用した構成から、jpaRepositoryを使用する構成へのマイグレーション
+- DBからの抽出を従業員全員抽出する機能を追加
+- 
 
 ### クラス図
 - ### 変更前
@@ -67,7 +68,7 @@ classDiagram
     
     class EmployeeRepository{
         <<interface>>
-        +findByEmployeeId(employeeId: Integer) EmployeeEntity
+        +findByEmployeeId(employeeId: Integer) List~EmployeeEntity~
     }
     
     class EmployeeEntity {
@@ -81,8 +82,8 @@ classDiagram
     HelloService ..> EmployeeEntity
     jakartaPersistence--> EmployeeEntity : DI
 
-    CrudRepository --|> JpaRepository : extends
-    JpaRepository --|> EmployeeRepository : extends
+    CrudRepository --|> JpaRepository 
+    JpaRepository --|> EmployeeRepository
 
     
 
@@ -102,10 +103,3 @@ https://qiita.com/shukawam/items/6e379df031dccebddd36
 - jpaRepository実装メソッドの命名規則
 https://qiita.com/shindo_ryo/items/af7d12be264c2cc4b252
 
-### 実装のヒント
-- 不足ライブラリのimport
-- repositoryクラス内に独自メソッドを記述
-- JPAを使用する場合、デフォルト設定ではH2データベースの初期化にはresources内のsqlを使わずにentityの定義に従って自動作成されるCREATE文が使用されるため、application.propertiesで自動作成設定をオフにすれば、resource内のsqlが実行される
-- H2 DATABASEのコンソール 
-    - http://localhost:8080/h2-console
-        - url... jdbc:h2:mem:testdb
